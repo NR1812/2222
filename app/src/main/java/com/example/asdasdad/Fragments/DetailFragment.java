@@ -154,18 +154,23 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("recipe");
-                FirebaseStorage storage = FirebaseStorage.getInstance();
+                if(key != null){
+                    final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("recipe");
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
 
-                StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
-                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        reference.child(key).removeValue();
-                        Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(viewF).navigate(R.id.action_detailFragment_to_show_all_recipes_fregment);
-                    }
-                });
+                    StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
+                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            reference.child(key).removeValue();
+                            Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(viewF).navigate(R.id.action_detailFragment_to_show_all_recipes_fregment);
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(getContext(), "Cant delete just remove from favorite", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -259,7 +264,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getContext(), "screan click", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "screen click", Toast.LENGTH_SHORT).show();
 
     }
 }

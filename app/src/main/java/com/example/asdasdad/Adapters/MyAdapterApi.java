@@ -66,8 +66,8 @@ public class MyAdapterApi extends RecyclerView.Adapter<MyViewHolderApi> {
                 Bundle args = new Bundle();
                 args.putString("recipeImage",(currentRecipe.getDataImage()));
                 args.putString("recipeName",currentRecipe.getDataName());
-                args.putString("recipeIngredients", currentRecipe.getDataIngredients());
-                args.putString("recipeInstructions",currentRecipe.getDataInstructions());
+                args.putString("recipeIngredients", currentRecipe.getDataIngredients().replace(",",".\n").replace("\n ","\n"));
+                args.putString("recipeInstructions",currentRecipe.getDataInstructions().replace(".",".\n").replace("\n ","\n"));
 
                 fragmentManager.setFragmentResult("requestKey", args);
                 Navigation.findNavController(viewF).navigate(R.id.action_show_api_recipeFragment_to_detailApi);
