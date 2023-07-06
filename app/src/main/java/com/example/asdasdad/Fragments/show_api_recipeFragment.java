@@ -95,19 +95,6 @@ public class show_api_recipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View viewF = inflater.inflate(R.layout.fragment_show_api_recipe,container,false);
 
-
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                // Handle the back button event
-                Log.d("result" , "yes");
-                Navigation.findNavController(viewF).navigate(R.id.action_show_api_recipeFragment_to_show_all_recipes_fregment);
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
-
-
         recyclerView = viewF.findViewById(R.id.recyclerViewApi);
         searchView = viewF.findViewById(R.id.searchApi);
         searchView.clearFocus();
@@ -136,9 +123,20 @@ public class show_api_recipeFragment extends Fragment {
 
         adapterApi =new MyAdapterApi(getContext(),dataList, viewF, getParentFragmentManager());
         recyclerView.setAdapter(adapterApi);
-
-        adapterApi.notifyDataSetChanged();
         dialog.dismiss();
+
+        //adapterApi.notifyDataSetChanged();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                Log.d("result" , "yes");
+                Navigation.findNavController(viewF).navigate(R.id.action_show_api_recipeFragment_to_show_all_recipes_fregment);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

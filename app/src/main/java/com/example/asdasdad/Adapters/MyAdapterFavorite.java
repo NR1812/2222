@@ -62,7 +62,7 @@ public class MyAdapterFavorite extends RecyclerView.Adapter<MyViewHolderFavorite
                 args.putString("recipeInstructions", dataList.get(holder.getAdapterPosition()).getDataDescription());
                 args.putString("recipeDifficulty", dataList.get(holder.getAdapterPosition()).getDataDifficultyLevel());
                 args.putString("recipePreparationTime", dataList.get(holder.getAdapterPosition()).getDataPreparationTime());
-                args.putString("key", dataList.get(holder.getAdapterPosition()).getKey());
+                args.putString("key", dataList.get(holder.getAdapterPosition()).getDataName());
                 //args.putString("Language", dataList.get(holder.getAdapterPosition()).getDataL);
 
 

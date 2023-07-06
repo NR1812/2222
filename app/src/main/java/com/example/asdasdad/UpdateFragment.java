@@ -3,7 +3,9 @@ package com.example.asdasdad;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -41,6 +43,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,11 +104,15 @@ public class UpdateFragment extends Fragment {
     NumberPicker updateHour, updatedMint;
     String name, ingredients, description, difficulty, preparationTime;
     String imageUrl;
-    String key, oldImageURL;
+    String key, oldImageURL, oldName;
     Uri uri;
     DatabaseReference databaseReference;
     StorageReference storageReference;
     View viewF;
+    Boolean currentRecipeIsFavorite = false;
+    SharedPreferences sharedPref;
+
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -118,6 +130,8 @@ public class UpdateFragment extends Fragment {
         updateHour = viewF.findViewById(R.id.updateHour);
         updatedMint = viewF.findViewById(R.id.updateMint);
         //updateDescription = viewF.findViewById(R.id.update);
+
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
 
         updateHour.setMaxValue(12);
@@ -191,12 +205,14 @@ public class UpdateFragment extends Fragment {
                 updateDifficulty.setText(result.getString("recipeDifficulty"));
                 key = result.getString("key");
                 imageUrl = result.getString("recipeImage");
-                oldImageURL = result.getString("recipeImage");
-                Glide.with(getContext()).load(result.getString("recipeImage")).into(updateImage);
-                updateImage.setTag(result.getString("recipeImage"));
+                oldImageURL = imageUrl;
+                Glide.with(requireContext()).load(imageUrl).into(updateImage);
+                updateImage.setTag(imageUrl);
 //                Glide.with(getContext()).load(result.getString("recipeImage")).into(updateImage);
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("recipe").child(key);
+                currentRecipeIsFavorite = isFavorite(updateName.getText().toString(),sharedPref);
+                oldName = updateName.getText().toString();
 
             }
         });
@@ -219,10 +235,25 @@ public class UpdateFragment extends Fragment {
                 //I
             }
         });
-
-
-
         return viewF;
+    }
+
+    public boolean isFavorite(String recipeName, @NonNull SharedPreferences sharedPref){
+        Map<String, ?> allEntries = sharedPref.getAll();
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            entry.getValue();
+            try {
+                JSONObject jsonObj = new JSONObject(entry.getValue().toString());
+                if (jsonObj.getString("recipeName").equals(recipeName)){
+                    return true;
+                }
+
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return false;
     }
 
     public void  saveData(){
@@ -253,10 +284,43 @@ public class UpdateFragment extends Fragment {
                 }
             });
         }
+        else{
+            updateData();
+        }
     }
 
     //  name, ingredients, description, difficulty
     public  void updateData(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Map<String, ?> allEntries = sharedPref.getAll();
+        if(currentRecipeIsFavorite){
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                entry.getValue();
+                try {
+                    JSONObject jsonObj = new JSONObject(entry.getValue().toString());
+                    if (jsonObj.getString("recipeName").equals(oldName)){
+                        editor.remove(entry.getKey());
+                        editor.apply();
+
+                        int allEntriesSize = allEntries.size();
+
+                        String jasonString = "{\"recipeName\":" + "\"" + updateName.getText().toString() + "\"" +
+                                ",\"recipeImage\":" + "\"" + imageUrl + "\"" +
+                                ",\"recipeIngredients\":" + "\"" + updateIngredients.getText().toString() + "\"" +
+                                ",\"recipeInstructions\":" + "\"" + updateDescription.getText().toString() + "\"" +
+                                ",\"recipeDifficulty\":" + "\"" + updateDifficulty.getText().toString() + "\"" +
+                                ",\"recipePreparationTime\":" + "\"" + updateHour.getValue() + "h & " + updatedMint.getValue() + "m" + "\"" + "}";
+
+                        editor.putString(Integer.toString(allEntriesSize + 1), jasonString);
+                        editor.apply();
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
 
         name = updateName.getText().toString();
         ingredients = updateIngredients.getText().toString();

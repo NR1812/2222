@@ -92,7 +92,6 @@ public class UploadRecipe extends Fragment {
     EditText uploadName, uploadIngredients, uploadDescription;
     TextView uploadDifficulty;
     NumberPicker uploadHour, uploadMint;
-    RadioButton uploadVegan, uploadVegetarian;
     Button saveButton;
     String imageURL;
     Uri uri;
@@ -121,8 +120,6 @@ public class UploadRecipe extends Fragment {
         uploadIngredients = viewF.findViewById(R.id.uploadIngredients);
         uploadDescription =viewF.findViewById(R.id.uploadDescription);
         uploadDifficulty = viewF.findViewById(R.id.uploadDifficulty);
-        uploadVegan = viewF.findViewById(R.id.uploadIsVegan);
-        uploadVegetarian = viewF.findViewById(R.id.uploadIsVegetarian);
         saveButton = viewF.findViewById(R.id.saveButton);
 
         uploadHour = viewF.findViewById(R.id.uploadHour);
@@ -244,8 +241,6 @@ public class UploadRecipe extends Fragment {
         String description = uploadDescription.getText().toString();
         String difficulty = uploadDifficulty.getText().toString();
         String preparationTime = uploadHour.getValue() + "h & " + uploadMint.getValue() + "m";
-        Boolean vegan = uploadVegan.isChecked();
-        Boolean vegetarian = uploadVegetarian.isChecked();
 
         DataClass dataClass = new DataClass(imageURL,name,ingredients,description,difficulty,preparationTime);
 
