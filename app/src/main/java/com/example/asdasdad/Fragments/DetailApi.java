@@ -158,7 +158,7 @@ public class DetailApi extends Fragment {
                     currentRecipeIsFavorite = true;
                     apiFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_favorite_24));
 
-                    int allEntriesSize = allEntries.size();
+                    int allEntriesSize = allEntries.size() + 1;
 
                     String jasonString = "{\"recipeName\":" + "\"" + detailName.getText().toString() + "\"" +
                             ",\"recipeImage\":" + "\"" + imageUrl + "\"" +
@@ -167,7 +167,7 @@ public class DetailApi extends Fragment {
                             ",\"recipeDifficulty\":" + "\""  + "\"" +
                             ",\"recipePreparationTime\":" + "\"" +  "\"" + "}";
 
-                    editor.putString(Integer.toString(allEntriesSize + 1), jasonString);
+                    editor.putString(Integer.toString(allEntriesSize), jasonString);
                     editor.apply();
                 }
             }

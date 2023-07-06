@@ -29,36 +29,15 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@drawable/food2"
-                        android:scaleType="centerCrop"
-                        android:id="@+id/detail_image"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/food2"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/detail_image"/>
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/detail_image"
-                        android:layout_alignBottom="@+id/detail_image"
-                        app:cardCornerRadius="50dp"
-                        app:cardElevation="0dp"
-                        android:backgroundTint="#70273333">
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/vigen3"
-                        android:scaleType="fitEnd"
-                        android:radius="500dp"/>
-
-                    </androidx.cardview.widget.CardView>
-
-                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
